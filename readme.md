@@ -37,6 +37,36 @@ with the voucher service maintained by another team. You may check their Voucher
 definition [here](https://app.swaggerhub.com/apis/mynt-iat/mynt-programming-exams/1.1.0). This also includes the details of the mock server that they have provided for your
 testing.
 
+<!-- GETTING STARTED -->
+## Getting Started
+
+Below are the instruction on how you will run the application. 
+
+### Prerequisites
+
+This is an example of how to list things you need to use the software and how to install them.
+
+  
+install JDK 17 and follow the instruction [here](https://docs.oracle.com/cd/E19062-01/sun.mgmt.ctr36/819-5418/6n7gk6imj/index.html).
+  
+
+### Installation
+
+Below is the instruction on how we will run the application:
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/your_username_/Project-Name.git
+   ```
+2. run the jar file located on the target folder
+   ```sh
+   java -jar delivery-parcel-0.0.1-SNAPSHOT.jar
+   ```
+3. Open the swagger in the browser:
+   ```js
+   http://localhost:8080/swagger-ui/index.html/
+   ```
+
 
 <!-- CONTACT -->
 ## Contact
