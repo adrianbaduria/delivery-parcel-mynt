@@ -56,9 +56,9 @@ Below is the instruction on how we will run the application:
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/adrianbaduria/delivery-parcel-mynt.git
    ```
-2. run the jar file located on the target folder
+2. Run the jar file located on the target folder
    ```sh
    java -jar delivery-parcel-0.0.1-SNAPSHOT.jar
    ```
@@ -72,6 +72,8 @@ Below is the instruction on how we will run the application:
 ## Contact
 
 linkedin - [@adrian.baduria](https://www.linkedin.com/in/adrian-baduria/) - adrian.baduria@gmail.com
+
+Mobile Number: 0917-728-0924
 
 Project Link: [delivery-parcel](https://github.com/adrianbaduria/delivery-parcel-mynt.git)
 
