@@ -1,0 +1,5 @@
+com\mynt\deliveryparcel\external\VoucherServiceTest.class
+com\mynt\deliveryparcel\controller\DeliveryParcelControllerTest.class
+com\mynt\deliveryparcel\repositoy\ParcelRuleRepositoryTest.class
+com\mynt\deliveryparcel\service\ParcelDeliveryServiceTest.class
+com\mynt\deliveryparcel\DeliveryParcelApplicationTests.class
