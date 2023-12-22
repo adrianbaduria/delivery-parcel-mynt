@@ -75,6 +75,6 @@ _Below is an example of how you can instruct your audience on installing and set
 
 linkedin - [@adrian.baduria](https://www.linkedin.com/in/adrian-baduria/) - adrian.baduria@gmail.com
 
-Project Link: [[https://github.com/your_username/repo_name](https://github.com/your_username/repo_name](https://github.com/adrianbaduria/delivery-parcel-mynt.git))
+Project Link: [delivery-parcel](https://github.com/your_username/repo_name](https://github.com/adrianbaduria/delivery-parcel-mynt.git))
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
