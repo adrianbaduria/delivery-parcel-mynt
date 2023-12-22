@@ -43,9 +43,6 @@ testing.
 Below are the instruction on how you will run the application. 
 
 ### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-
   
 install JDK 17 and follow the instruction [here](https://docs.oracle.com/cd/E19062-01/sun.mgmt.ctr36/819-5418/6n7gk6imj/index.html).
   
