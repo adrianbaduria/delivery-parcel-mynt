@@ -42,7 +42,7 @@ class ParcelDeliveryServiceTest {
         RuleName ruleName = RuleName.SMALL_PARCEL;
 
         ParcelDetails smallParcel = ParcelDetails.builder().ruleName(ruleName).baseCost(0.03f).build();
-        //ParcelDetails parcelDetails = new ParcelDetails( 2L, ruleName, 0.03f, 0.03f);
+
         when(parcelRuleRepository.findByRuleName(ruleName)).thenReturn(Optional.of(smallParcel));
         when(voucherService.getVoucherDetails(anyString())).thenReturn(null);
 

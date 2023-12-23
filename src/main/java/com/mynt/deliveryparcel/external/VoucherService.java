@@ -18,6 +18,12 @@ public class VoucherService {
     @Value("${voucher.api.stub.value}")
     private String stubValue;
 
+    /**
+     * Gets the voucher details from the external api.
+     *
+     * @param voucherCode voucher code.
+     * @return voucherDto details
+     */
     public VoucherDto getVoucherDetails(String voucherCode) {
 
         //stub

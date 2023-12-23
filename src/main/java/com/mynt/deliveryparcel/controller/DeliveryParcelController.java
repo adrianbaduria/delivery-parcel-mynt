@@ -24,6 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class DeliveryParcelController {
     private final ParcelDeliveryService parcelService;
 
+    /**
+     * Gets the parcel details.
+     *
+     * @param parcelDetailsDto
+     * @return parcel cost.
+     */
     @Operation(summary = "Get cost of parcel by weight and volume.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Parcel price generated.",
