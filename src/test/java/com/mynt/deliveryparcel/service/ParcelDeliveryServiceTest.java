@@ -12,6 +12,7 @@ import com.mynt.deliveryparcel.enums.RuleName;
 import com.mynt.deliveryparcel.error.Exceptions;
 import com.mynt.deliveryparcel.external.VoucherDto;
 import com.mynt.deliveryparcel.external.VoucherService;
+import com.mynt.deliveryparcel.service.impl.ParcelDeliveryServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -29,7 +30,7 @@ class ParcelDeliveryServiceTest {
     private ParcelRuleRepository parcelRuleRepository;
 
     @InjectMocks
-    private ParcelDeliveryService parcelDeliveryService;
+    private ParcelDeliveryServiceImpl parcelDeliveryService;
 
     @BeforeEach
     void setUp() {

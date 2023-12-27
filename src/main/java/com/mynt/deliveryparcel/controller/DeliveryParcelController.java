@@ -3,6 +3,7 @@ package com.mynt.deliveryparcel.controller;
 import com.mynt.deliveryparcel.service.ParcelDeliveryService;
 import com.mynt.deliveryparcel.dto.request.ParcelDetailsDto;
 import com.mynt.deliveryparcel.dto.response.ParcelCostDto;
+import com.mynt.deliveryparcel.service.impl.ParcelDeliveryServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RequestMapping("/api/parcel-delivery/")
 public class DeliveryParcelController {
-    private final ParcelDeliveryService parcelService;
+    private final ParcelDeliveryServiceImpl parcelService;
 
     /**
      * Gets the parcel details.

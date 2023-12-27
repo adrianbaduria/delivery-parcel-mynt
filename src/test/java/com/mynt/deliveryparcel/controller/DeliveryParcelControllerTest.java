@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 import com.mynt.deliveryparcel.dto.request.ParcelDetailsDto;
 import com.mynt.deliveryparcel.dto.response.ParcelCostDto;
 import com.mynt.deliveryparcel.service.ParcelDeliveryService;
+import com.mynt.deliveryparcel.service.impl.ParcelDeliveryServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 @ExtendWith(MockitoExtension.class)
 public class DeliveryParcelControllerTest {
     @Mock
-    private ParcelDeliveryService parcelService;
+    private ParcelDeliveryServiceImpl parcelService;
 
     @InjectMocks
     private DeliveryParcelController deliveryParcelController;
