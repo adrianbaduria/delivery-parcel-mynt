@@ -9,19 +9,21 @@ import com.mynt.deliveryparcel.enums.RuleName;
 import com.mynt.deliveryparcel.error.Exceptions;
 import com.mynt.deliveryparcel.external.VoucherDto;
 import com.mynt.deliveryparcel.external.VoucherService;
+import com.mynt.deliveryparcel.service.ParcelDeliveryService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 /**
  * Parcel Delivery Service.
  */
 @Service
 @AllArgsConstructor
-public class ParcelDeliveryServiceImpl {
+public class ParcelDeliveryServiceImpl implements ParcelDeliveryService {
 
     private final VoucherService voucherService;
 
@@ -49,7 +51,9 @@ public class ParcelDeliveryServiceImpl {
             cost = getDiscountedPrice(cost, parcelDetailsDto.getVoucherCode());
         }
 
-        return new ParcelCostDto(cost);
+        ParcelCostDto parcelCostResponse = ParcelCostDto.builder().requestId(UUID.randomUUID().toString()).parcelCost(cost).build();
+
+        return parcelCostResponse;
     }
 
     /**

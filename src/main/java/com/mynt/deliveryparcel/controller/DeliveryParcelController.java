@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RequestMapping("/api/parcel-delivery/")
 public class DeliveryParcelController {
-    private final ParcelDeliveryServiceImpl parcelService;
+    private final ParcelDeliveryService parcelService;
 
     /**
      * Gets the parcel details.
@@ -31,14 +31,18 @@ public class DeliveryParcelController {
      * @param parcelDetailsDto
      * @return parcel cost.
      */
-    @Operation(summary = "Get cost of parcel by weight and volume.")
+    @Operation(
+            description = "",
+            summary = "Retrieves total cost of parcel by weight and volume.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Parcel price generated.",
+            @ApiResponse(responseCode = "200", description = "Successful execution.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ParcelCostDto.class))}),
-            @ApiResponse(responseCode = "400", description = "Invalid parcel details.",
+            @ApiResponse(responseCode = "400", description = "Bad Request.",
                     content = @Content),
-            @ApiResponse(responseCode = "404", description = "Voucher code not found.",
+            @ApiResponse(responseCode = "404", description = "Not Found.",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Server Error.",
                     content = @Content)
     })
     @PostMapping(value = "/cost", consumes = MediaType.APPLICATION_JSON_VALUE,

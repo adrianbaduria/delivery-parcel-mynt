@@ -27,7 +27,7 @@ public class DeliveryParcelControllerTest {
     @Test
     void testGetParcelCost_ValidParcelDetails_Returns200() {
         ParcelDetailsDto parcelDetailsDto = new ParcelDetailsDto();
-        when(parcelService.computeParcelPrice(any())).thenReturn(new ParcelCostDto(50F));
+        when(parcelService.computeParcelPrice(any())).thenReturn(new ParcelCostDto("188fc4fe-b2cd-4d12-b731-15e8f92b0cba",50F));
 
         ResponseEntity<ParcelCostDto> response = deliveryParcelController.getParcelCost(parcelDetailsDto);
 
