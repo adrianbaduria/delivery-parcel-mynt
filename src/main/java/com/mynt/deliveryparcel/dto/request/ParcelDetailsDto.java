@@ -14,20 +14,20 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ParcelDetailsDto {
 
-    @NotNull(message = "Please enter proper weight value.")
+    @NotNull(message = "Please input valid weight.")
     @Min(value = 1, message = "Weight should be at least 1 kg.")
     @Max(value = 50, message = "Weight should not exceed 50 kgs.")
     private Float weight;
 
-    @NotNull(message = "Please enter proper height value.")
+    @NotNull(message = "Please input valid height.")
     @Min(value = 1, message = "Weight should be at least 1 cm.")
     private Float height;
 
-    @NotNull(message = "Please enter proper width value.")
+    @NotNull(message = "Please input valid width.")
     @Min(value = 1, message = "Weight should be at least 1 cm.")
     private Float width;
 
-    @NotNull(message = "Please enter proper length value.")
+    @NotNull(message = "Please input valid length.")
     @Min(value = 1, message = "Weight should be at least 1 cm.")
     private Float length;
 
