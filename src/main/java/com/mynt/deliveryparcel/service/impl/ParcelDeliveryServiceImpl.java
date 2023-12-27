@@ -44,14 +44,15 @@ public class ParcelDeliveryServiceImpl implements ParcelDeliveryService {
         ParcelDetails parcelRule = parcelRuleRepository.findByRuleName(ruleName)
                 .orElseThrow(() -> new Exceptions(Constants.NO_PARCEL_RULE_FOUND));
 
-        float cost = computeCost(volume, parcelDetailsRequest.getWeight(),
-                parcelRule.getBaseCost(), ruleName);
+        float cost = computeTotalCost(volume, parcelDetailsRequest.getWeight(),
+                parcelRule.getCost(), ruleName);
 
         if (StringUtils.hasLength(parcelDetailsRequest.getVoucherCode())) {
-            cost = getDiscountedPrice(cost, parcelDetailsRequest.getVoucherCode());
+            cost = getDiscount(cost, parcelDetailsRequest.getVoucherCode());
         }
 
-        ParcelCostResponse parcelCostResponse = com.mynt.deliveryparcel.dto.response.ParcelCostResponse.builder().requestId(UUID.randomUUID().toString()).parcelCost(cost).build();
+        ParcelCostResponse parcelCostResponse
+                = ParcelCostResponse.builder().requestId(UUID.randomUUID().toString()).parcelCost(cost).build();
 
         return parcelCostResponse;
     }
@@ -66,6 +67,7 @@ public class ParcelDeliveryServiceImpl implements ParcelDeliveryService {
         return parcelDetailsRequest.getHeight() * parcelDetailsRequest.getLength() * parcelDetailsRequest.getWidth();
     }
 
+
     /**
      * Gets the rule name based from volume and weight.
      *
@@ -77,16 +79,18 @@ public class ParcelDeliveryServiceImpl implements ParcelDeliveryService {
 
         RuleName ruleName;
 
-        if (Float.compare(weight, 50f) > 0) return RuleName.REJECT;
-
-        if (Float.compare(weight, 10f) > 0) return RuleName.HEAVY_PARCEL;
-
-        if (volume < 1500f) {
-            ruleName = RuleName.SMALL_PARCEL;
-        } else if (volume >= 1500f && volume < 2500f) {
-            ruleName = RuleName.MEDIUM_PARCEL;
+        if (weight > 50f) {
+            ruleName = RuleName.REJECT;
+        } else if (weight > 10f) {
+            ruleName = RuleName.HEAVY_PARCEL;
         } else {
-            ruleName = RuleName.LARGE_PARCEL;
+            if (volume < 1500f) {
+                ruleName = RuleName.SMALL_PARCEL;
+            } else if (volume >= 1500f && volume < 2500f) {
+                ruleName = RuleName.MEDIUM_PARCEL;
+            } else {
+                ruleName = RuleName.LARGE_PARCEL;
+            }
         }
 
         return ruleName;
@@ -97,22 +101,22 @@ public class ParcelDeliveryServiceImpl implements ParcelDeliveryService {
      *
      * @param volume volume of the parcel.
      * @param weight weight of the parcel.
-     * @param baseCost cost based of parcel type.
+     * @param cost cost based of parcel type.
      * @param ruleName enum of rule name.
      * @return total cost value.
      */
-    private float computeCost(float volume, float weight, float baseCost, RuleName ruleName) {
-        float cost;
+    private float computeTotalCost(float volume, float weight, float cost, RuleName ruleName) {
+        float computedCost;
 
         if(ruleName == RuleName.REJECT) {
             throw new Exceptions(Constants.REJECT);
         }else if (ruleName == RuleName.HEAVY_PARCEL) {
-            cost = baseCost * weight;
+            computedCost = cost * weight;
         } else {
-            cost = baseCost * volume;
+            computedCost = cost * volume;
         }
 
-        return cost;
+        return computedCost;
     }
 
     /**
@@ -122,7 +126,7 @@ public class ParcelDeliveryServiceImpl implements ParcelDeliveryService {
      * @param voucherCode voucher code inputted.
      * @return computed total cost including the discounted price.
      */
-    private float getDiscountedPrice(float originalCost, String voucherCode) {
+    private float getDiscount(float originalCost, String voucherCode) {
         try {
             VoucherDto voucherDto = voucherService.getVoucherDetails(voucherCode);
 
