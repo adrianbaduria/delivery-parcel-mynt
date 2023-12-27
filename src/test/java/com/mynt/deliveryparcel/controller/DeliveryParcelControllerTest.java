@@ -4,9 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import com.mynt.deliveryparcel.dto.request.ParcelDetailsDto;
-import com.mynt.deliveryparcel.dto.response.ParcelCostDto;
-import com.mynt.deliveryparcel.service.ParcelDeliveryService;
+import com.mynt.deliveryparcel.dto.request.ParcelDetailsRequest;
+import com.mynt.deliveryparcel.dto.response.ParcelCostResponse;
 import com.mynt.deliveryparcel.service.impl.ParcelDeliveryServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,11 +25,12 @@ public class DeliveryParcelControllerTest {
 
     @Test
     void testGetParcelCost_ValidParcelDetails_Returns200() {
-        ParcelDetailsDto parcelDetailsDto = new ParcelDetailsDto();
-        when(parcelService.computeParcelPrice(any())).thenReturn(new ParcelCostDto("188fc4fe-b2cd-4d12-b731-15e8f92b0cba",50F));
+        ParcelDetailsRequest parcelDetailsRequest = new ParcelDetailsRequest();
+        when(parcelService.computeParcelPrice(any())).thenReturn(new ParcelCostResponse("188fc4fe-b2cd-4d12-b731-15e8f92b0cba",50F));
 
-        ResponseEntity<ParcelCostDto> response = deliveryParcelController.getParcelCost(parcelDetailsDto);
+        ResponseEntity<ParcelCostResponse> response = deliveryParcelController.getParcelCost(parcelDetailsRequest);
 
+        assertEquals("188fc4fe-b2cd-4d12-b731-15e8f92b0cba",response.getBody().getRequestId());
         assertEquals(HttpStatus.OK, response.getStatusCode());
         verify(parcelService, times(1)).computeParcelPrice(any());
     }

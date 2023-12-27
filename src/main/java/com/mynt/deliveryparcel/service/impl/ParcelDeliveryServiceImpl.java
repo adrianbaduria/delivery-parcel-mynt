@@ -3,8 +3,8 @@ package com.mynt.deliveryparcel.service.impl;
 import com.mynt.deliveryparcel.constant.Constants;
 import com.mynt.deliveryparcel.db.domain.ParcelDetails;
 import com.mynt.deliveryparcel.db.repository.ParcelRuleRepository;
-import com.mynt.deliveryparcel.dto.request.ParcelDetailsDto;
-import com.mynt.deliveryparcel.dto.response.ParcelCostDto;
+import com.mynt.deliveryparcel.dto.request.ParcelDetailsRequest;
+import com.mynt.deliveryparcel.dto.response.ParcelCostResponse;
 import com.mynt.deliveryparcel.enums.RuleName;
 import com.mynt.deliveryparcel.error.Exceptions;
 import com.mynt.deliveryparcel.external.VoucherDto;
@@ -32,26 +32,26 @@ public class ParcelDeliveryServiceImpl implements ParcelDeliveryService {
     /**
      * This function is to compute parcel price.
      *
-     * @param parcelDetailsDto parcel details.
+     * @param parcelDetailsRequest parcel details.
      * @return parcel cost.
      */
-    public ParcelCostDto computeParcelPrice(ParcelDetailsDto parcelDetailsDto) {
+    public ParcelCostResponse computeParcelPrice(ParcelDetailsRequest parcelDetailsRequest) {
 
-        float volume = computeVolume(parcelDetailsDto);
+        float volume = computeVolume(parcelDetailsRequest);
 
-        RuleName ruleName = getRuleName(volume, parcelDetailsDto.getWeight());
+        RuleName ruleName = getRuleName(volume, parcelDetailsRequest.getWeight());
 
         ParcelDetails parcelRule = parcelRuleRepository.findByRuleName(ruleName)
                 .orElseThrow(() -> new Exceptions(Constants.NO_PARCEL_RULE_FOUND));
 
-        float cost = computeCost(volume, parcelDetailsDto.getWeight(),
+        float cost = computeCost(volume, parcelDetailsRequest.getWeight(),
                 parcelRule.getBaseCost(), ruleName);
 
-        if (StringUtils.hasLength(parcelDetailsDto.getVoucherCode())) {
-            cost = getDiscountedPrice(cost, parcelDetailsDto.getVoucherCode());
+        if (StringUtils.hasLength(parcelDetailsRequest.getVoucherCode())) {
+            cost = getDiscountedPrice(cost, parcelDetailsRequest.getVoucherCode());
         }
 
-        ParcelCostDto parcelCostResponse = ParcelCostDto.builder().requestId(UUID.randomUUID().toString()).parcelCost(cost).build();
+        ParcelCostResponse parcelCostResponse = com.mynt.deliveryparcel.dto.response.ParcelCostResponse.builder().requestId(UUID.randomUUID().toString()).parcelCost(cost).build();
 
         return parcelCostResponse;
     }
@@ -59,11 +59,11 @@ public class ParcelDeliveryServiceImpl implements ParcelDeliveryService {
     /**
      * Computes height, length and width.
      *
-     * @param parcelDetailsDto parcel details.
+     * @param parcelDetailsRequest parcel details.
      * @return total volume.
      */
-    private float computeVolume(ParcelDetailsDto parcelDetailsDto){
-        return parcelDetailsDto.getHeight() * parcelDetailsDto.getLength() * parcelDetailsDto.getWidth();
+    private float computeVolume(ParcelDetailsRequest parcelDetailsRequest){
+        return parcelDetailsRequest.getHeight() * parcelDetailsRequest.getLength() * parcelDetailsRequest.getWidth();
     }
 
     /**
