@@ -11,10 +11,14 @@ import com.mynt.deliveryparcel.external.VoucherDto;
 import com.mynt.deliveryparcel.external.VoucherService;
 import com.mynt.deliveryparcel.service.ParcelDeliveryService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.net.ConnectException;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -23,11 +27,14 @@ import java.util.UUID;
  */
 @Service
 @AllArgsConstructor
+@Slf4j
 public class ParcelDeliveryServiceImpl implements ParcelDeliveryService {
 
     private final VoucherService voucherService;
 
     private final ParcelRuleRepository parcelRuleRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(ParcelDeliveryServiceImpl.class);
 
     /**
      * This function is to compute parcel price.
@@ -37,15 +44,19 @@ public class ParcelDeliveryServiceImpl implements ParcelDeliveryService {
      */
     public ParcelCostResponse computeParcelPrice(ParcelDetailsRequest parcelDetailsRequest) {
 
-        float volume = computeVolume(parcelDetailsRequest);
+        double volume = computeVolume(parcelDetailsRequest);
 
         RuleName ruleName = getRuleName(volume, parcelDetailsRequest.getWeight());
+
+        logger.info("Rule Name: {} ", ruleName);
 
         ParcelDetails parcelRule = parcelRuleRepository.findByRuleName(ruleName)
                 .orElseThrow(() -> new Exceptions(Constants.NO_PARCEL_RULE_FOUND));
 
-        float cost = computeTotalCost(volume, parcelDetailsRequest.getWeight(),
+        double cost = computeTotalCost(volume, parcelDetailsRequest.getWeight(),
                 parcelRule.getCost(), ruleName);
+
+        logger.info("cost: {} ", cost);
 
         if (StringUtils.hasLength(parcelDetailsRequest.getVoucherCode())) {
             cost = getDiscount(cost, parcelDetailsRequest.getVoucherCode());
@@ -53,6 +64,8 @@ public class ParcelDeliveryServiceImpl implements ParcelDeliveryService {
 
         ParcelCostResponse parcelCostResponse
                 = ParcelCostResponse.builder().requestId(UUID.randomUUID().toString()).parcelCost(cost).build();
+
+        logger.info("parcelCostResponse: {} ", parcelCostResponse);
 
         return parcelCostResponse;
     }
@@ -63,7 +76,7 @@ public class ParcelDeliveryServiceImpl implements ParcelDeliveryService {
      * @param parcelDetailsRequest parcel details.
      * @return total volume.
      */
-    private float computeVolume(ParcelDetailsRequest parcelDetailsRequest){
+    private double computeVolume(ParcelDetailsRequest parcelDetailsRequest){
         return parcelDetailsRequest.getHeight() * parcelDetailsRequest.getLength() * parcelDetailsRequest.getWidth();
     }
 
@@ -75,7 +88,7 @@ public class ParcelDeliveryServiceImpl implements ParcelDeliveryService {
      * @param weight weight of parcel
      * @return rule name value
      */
-    private RuleName getRuleName(float volume, float weight) {
+    private RuleName getRuleName(Double volume, Double weight) {
 
         RuleName ruleName;
 
@@ -105,8 +118,8 @@ public class ParcelDeliveryServiceImpl implements ParcelDeliveryService {
      * @param ruleName enum of rule name.
      * @return total cost value.
      */
-    private float computeTotalCost(float volume, float weight, float cost, RuleName ruleName) {
-        float computedCost;
+    private Double computeTotalCost(Double volume, Double weight, Double cost, RuleName ruleName) {
+        double computedCost;
 
         if(ruleName == RuleName.REJECT) {
             throw new Exceptions(Constants.REJECT);
@@ -126,14 +139,17 @@ public class ParcelDeliveryServiceImpl implements ParcelDeliveryService {
      * @param voucherCode voucher code inputted.
      * @return computed total cost including the discounted price.
      */
-    private float getDiscount(float originalCost, String voucherCode) {
+    private double getDiscount(double originalCost, String voucherCode) {
         try {
             VoucherDto voucherDto = voucherService.getVoucherDetails(voucherCode);
+
+            logger.debug("voucherDTO : {}", voucherDto);
 
             if (voucherDto != null) {
                 LocalDate expiryDate = LocalDate.parse(voucherDto.getExpiry());
 
                 if (LocalDate.now().isAfter(expiryDate)) {
+                    logger.warn("voucher expired");
                     throw new Exceptions(Constants.VOUCHER_EXPIRED);
                 }
 
@@ -141,6 +157,7 @@ public class ParcelDeliveryServiceImpl implements ParcelDeliveryService {
                 return originalCost - (originalCost * discountPercentage);
             }
         } catch (HttpClientErrorException exception) {
+            logger.error("Error encountered : {}", exception);
             throw new Exceptions(Constants.VOUCHER_INVALID);
         }
 

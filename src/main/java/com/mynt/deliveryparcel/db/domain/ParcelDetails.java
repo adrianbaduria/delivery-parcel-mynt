@@ -26,6 +26,6 @@ public class ParcelDetails {
     private Float condition;
 
     @Column(name = "cost")
-    private Float cost;
+    private Double cost;
 
 }

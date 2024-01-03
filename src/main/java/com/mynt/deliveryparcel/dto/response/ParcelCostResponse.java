@@ -15,6 +15,6 @@ public class ParcelCostResponse {
     private String requestId;
 
     @Schema(description = "Parcel cost", example = "100.00")
-    private Float parcelCost;
+    private Double parcelCost;
 
 }

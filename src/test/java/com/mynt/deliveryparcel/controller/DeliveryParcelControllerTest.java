@@ -36,7 +36,7 @@ public class DeliveryParcelControllerTest {
     void testGetParcelCost_ValidParcelDetails_Returns200() {
         ParcelDetailsRequest parcelDetailsRequest = new ParcelDetailsRequest();
         when(parcelService.computeParcelPrice(any()))
-                .thenReturn(new ParcelCostResponse("188fc4fe-b2cd-4d12-b731-15e8f92b0cba",50F));
+                .thenReturn(new ParcelCostResponse("188fc4fe-b2cd-4d12-b731-15e8f92b0cba",50.00));
 
         ResponseEntity<ParcelCostResponse> response = deliveryParcelController.getParcelCost(parcelDetailsRequest);
 

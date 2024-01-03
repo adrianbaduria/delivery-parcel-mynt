@@ -21,10 +21,10 @@ public class DbOperationRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         List<ParcelDetails> parcelRules = List.of(
-                new ParcelDetails(1L, RuleName.HEAVY_PARCEL, 0F ,20f),
-                new ParcelDetails( 2L, RuleName.SMALL_PARCEL, 0.03f, 0.03f),
-                new ParcelDetails( 3L, RuleName.MEDIUM_PARCEL, 0.04f, 0.04f),
-                new ParcelDetails( 4L, RuleName.LARGE_PARCEL, 0.05f, 0.05f)
+                new ParcelDetails(1L, RuleName.HEAVY_PARCEL, 0F ,20.00),
+                new ParcelDetails( 2L, RuleName.SMALL_PARCEL, 0.03f, 0.03),
+                new ParcelDetails( 3L, RuleName.MEDIUM_PARCEL, 0.04f, 0.04),
+                new ParcelDetails( 4L, RuleName.LARGE_PARCEL, 0.05f, 0.05)
         );
 
         parcelRuleRepository.saveAll(parcelRules);
