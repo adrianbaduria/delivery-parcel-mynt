@@ -92,14 +92,14 @@ public class ParcelDeliveryServiceImpl implements ParcelDeliveryService {
 
         RuleName ruleName;
 
-        if (weight > 50f) {
+        if (weight > 50.00) {
             ruleName = RuleName.REJECT;
-        } else if (weight > 10f) {
+        } else if (weight > 10.00) {
             ruleName = RuleName.HEAVY_PARCEL;
         } else {
-            if (volume < 1500f) {
+            if (volume < 1500.00) {
                 ruleName = RuleName.SMALL_PARCEL;
-            } else if (volume >= 1500f && volume < 2500f) {
+            } else if (volume >= 1500.00 && volume < 2500.00) {
                 ruleName = RuleName.MEDIUM_PARCEL;
             } else {
                 ruleName = RuleName.LARGE_PARCEL;
